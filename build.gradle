@@ -1,25 +1,23 @@
-sourceSets {
-    testLocal {
-        java.srcDir file('src/test/java')
-        resources.srcDir file('src/test/res')
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
- 
-dependencies {
-    ...
-    testLocalCompile 'junit:junit:4.10'
-    testLocalCompile 'org.mockito:mockito-core:1.9.5'
-}
- 
-task localTest(type: Test, dependsOn: assemble) {
-    testClassesDir = sourceSets.testLocal.output.classesDir
-    android.sourceSets.main.java.srcDirs.each { dir ->
-        def buildDir = dir.getAbsolutePath().split('/')
-        buildDir = (buildDir[0..(buildDir.length - 4)] + ['build', 'classes', 'debug']).join('/')
-        sourceSets.testLocal.compileClasspath += files(buildDir)
-        sourceSets.testLocal.runtimeClasspath += files(buildDir)
+
+allprojects {
+    repositories {
+        jcenter()
     }
-    classpath = sourceSets.testLocal.runtimeClasspath
 }
- 
-check.dependsOn localTest
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
